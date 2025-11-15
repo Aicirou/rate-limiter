@@ -1,0 +1,32 @@
+{
+  "name": "rate-limiter",
+  "version": "1.0.0",
+  "description": "A flexible, decoupled rate limiting library for Node.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "example": "ts-node src/examples/usage-example.ts",
+    "example:redis": "ts-node src/examples/redis-example.ts",
+    "example:dual": "ts-node src/examples/dual-storage-example.ts",
+    "redis:monitor": "./scripts/redis-monitor.sh",
+    "redis:keys": "./scripts/redis-keys.sh"
+  },
+  "keywords": [
+    "rate-limiter",
+    "rate-limiting",
+    "middleware",
+    "token-bucket",
+    "fixed-window"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "redis": "^4.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.0"
+  }
+}

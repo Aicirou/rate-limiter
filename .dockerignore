@@ -1,0 +1,13 @@
+# Docker Setup Instructions
+
+Add these files to `.dockerignore`:
+
+```
+node_modules
+npm-debug.log
+dist
+.git
+.gitignore
+.env
+*.md
+```
