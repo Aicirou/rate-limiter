@@ -62,7 +62,7 @@ Rate limiting can be implemented at multiple layers:
 3. **CDN/Edge Level**
    - Closest to users
    - Reduces backend load
-   - Examples: CloudFlare, Fastly
+   - Examples: Cloudflare, Fastly
 
 4. **Load Balancer Level**
    - Distributes load fairly
