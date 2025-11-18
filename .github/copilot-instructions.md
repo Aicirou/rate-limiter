@@ -250,7 +250,7 @@ if (result.allowed) {
 const memoryLimiter = new RateLimiter(new MemoryStorage(), strategy);
 const redisLimiter = new RateLimiter(new RedisStorage(redisClient), strategy);
 
-// Easy to swap strategy  
+// Easy to swap strategy
 const fixedWindow = new RateLimiter(storage, new FixedWindowStrategy());
 const tokenBucket = new RateLimiter(storage, new TokenBucketStrategy());
 ```
