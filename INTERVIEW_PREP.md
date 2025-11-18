@@ -1242,14 +1242,39 @@ if (count > config.limit) {
 #### ❌ 2. Ignoring Time Zones and Clocks
 
 ```javascript
-// BAD
+// BAD - Using local time without considering clock skew
 const windowStart = Math.floor(Date.now() / 1000);
+const key = `limit:${userId}:${windowStart}`;
+// Problem: Different servers may have different times
+// leading to inconsistent window calculations
 
-// GOOD
-const windowStart = Math.floor(Date.now() / 1000);
-// Use consistent time source (NTP)
-// Handle clock drift
-// Use UTC everywhere
+// GOOD - Use centralized time source and handle clock drift
+class TimeAwareRateLimiter {
+  private clockSkewThreshold = 5; // seconds
+  
+  async getWindowStart(windowSeconds: number): Promise<number> {
+    // Option 1: Get time from Redis (single source of truth)
+    const redisTime = await redis.time(); // Returns [seconds, microseconds]
+    const serverTime = Math.floor(Date.now() / 1000);
+    
+    // Detect and log clock drift
+    const drift = Math.abs(redisTime[0] - serverTime);
+    if (drift > this.clockSkewThreshold) {
+      logger.warn(`Clock drift detected: ${drift}s`);
+    }
+    
+    // Use Redis time as authoritative source
+    return Math.floor(redisTime[0] / windowSeconds) * windowSeconds;
+  }
+  
+  // Option 2: Always use UTC and sync with NTP
+  getUTCWindowStart(windowSeconds: number): number {
+    // Date.now() returns UTC milliseconds
+    const utcSeconds = Math.floor(Date.now() / 1000);
+    return Math.floor(utcSeconds / windowSeconds) * windowSeconds;
+    // Ensure NTP is configured on all servers
+  }
+}
 ```
 
 #### ❌ 3. Not Handling Distributed Systems
